@@ -43,30 +43,28 @@ app.post('/users', function(req, res) {
     name:  req.body.name
   });
   user.save();
-  user.fetch().then(function(model) {
-    return model.get('id');
-  }).then(function(id) {
-    req.session.user_id = id;
-  }).then(function() {
-    res.redirect('/welcome');
-  });
+  user.fetch()
+    .then(function(model) {
+      return model.get('id');
+    })
+    .then(function(id) {
+      req.session.user_id = id;
+    })
+    .then(function() {
+      res.redirect('/welcome');
+    });
 });
 
 app.get('/welcome', function(req, res) {
-    console.log(req.session.user_id);
-    var result;
-    new User({id: req.session.user_id})
-      .fetch()
-      .then(function(user) {
-        console.log(user.get('email'));
-        result = user.get('email');
-      })
-      .then(function() {
-        res.send("hello world " + result);
-      });
+  User.forge({id: req.session.user_id})
+    .fetch()
+    .then(function(user) {
+      return user.get('email');
+    })
+    .then(function(result) {
+      res.send("hello world " + result);
+    });
 });
-
-
 
 app.listen(3000, function() {
   console.log("Server running on port 3000");
