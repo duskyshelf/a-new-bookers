@@ -50,6 +50,3 @@ DEPENDENCIES
   database_cleaner
   poltergeist
   rspec
-
-BUNDLED WITH
-   1.10.5
